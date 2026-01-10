@@ -12,7 +12,7 @@ targetAttacked <- function(attack, target) {
   if (actualDamage > target$health) {actualDamage <- target$health}
   health <- target$health - actualDamage
   list(health = health, damage = actualDamage,
-       push = attack$push, pull = attack$pull, 
+       push = attack$push || !health, pull = attack$pull || !health, 
        target = attack$target, poison = target$poison || attack$poison || !health, 
        wound = target$wound || attack$wound || !health, 
        immobilize = target$immobilize || attack$immobilize || !health, 
@@ -21,7 +21,8 @@ targetAttacked <- function(attack, target) {
        muddle = target$muddle || attack$muddle || !health, curse = attack$curse || !health)
 }
 
-
+#Prints the state of the enemy after an attack in a more human readable format, 
+#uses stringr to combine strings
 printAttackEffects <- function(enemyState) {
   print(str_c("damage: ", enemyState$damage))
   print(str_c("health remaining: ", enemyState$health))
