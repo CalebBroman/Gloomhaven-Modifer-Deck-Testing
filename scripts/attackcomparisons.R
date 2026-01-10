@@ -36,16 +36,18 @@ targetAttacked <- function(attack, target) {
 printAttackEffects <- function(enemyState) {
   print(str_c("damage: ", enemyState$damage))
   print(str_c("health remaining: ", enemyState$health))
-  if (enemyState$push != 0) {print(str_c("push: ", enemyState$push))}
-  if (enemyState$pull != 0) {print(str_c("pull: ", enemyState$pull))}
-  if (enemyState$pierce != 0) {print(str_c("pierce: ", enemyState$pierce))}
-  if (enemyState$poison == T) {print("poison")}
-  if (enemyState$wound == T) {print("wound")}
-  if (enemyState$immobilize == T) {print("immobilize")}
-  if (enemyState$disarm == T) {print("disarm")}
-  if (enemyState$stun == T) {print("stun")}
-  if (enemyState$muddle == T) {print("muddle")}
-  if (enemyState$curse == T) {print("curse")}
+  if (enemyState$health) {
+    if (enemyState$push != 0) {print(str_c("push: ", enemyState$push))}
+    if (enemyState$pull != 0) {print(str_c("pull: ", enemyState$pull))}
+    if (enemyState$pierce != 0) {print(str_c("pierce: ", enemyState$pierce))}
+    if (enemyState$poison == T) {print("poison")}
+    if (enemyState$wound == T) {print("wound")}
+    if (enemyState$immobilize == T) {print("immobilize")}
+    if (enemyState$disarm == T) {print("disarm")}
+    if (enemyState$stun == T) {print("stun")}
+    if (enemyState$muddle == T) {print("muddle")}
+    if (enemyState$curse == T) {print("curse")}
+  }
 }
 
 #compares two attacks, returns 1 if the first is better, 
