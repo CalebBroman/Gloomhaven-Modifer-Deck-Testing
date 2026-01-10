@@ -14,3 +14,4 @@ shuffle <- function(deck) {
   deck <- sample(deck, length(deck), replace = F)
   deck
 }
+
