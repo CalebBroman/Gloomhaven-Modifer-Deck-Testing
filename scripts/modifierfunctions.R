@@ -3,8 +3,7 @@
 # Each function will take in and return a list in the form:
 # 
 # (roll = T, shuffle = F, damage, 
-#  shield = 0, retaliate = 0, push = 0, pull = 0, pierce = 0, target = 1,
-#  invisible = F, strengthen = F, regenerate = F, bless = F, poison = F, wound = F,
+#  push = 0, pull = 0, pierce = 0, target = 1, poison = F, wound = F,
 #  immobilize = F, disarm = F, stun = F, muddle = F, curse = F)
 
 #Universal Modifiers:
