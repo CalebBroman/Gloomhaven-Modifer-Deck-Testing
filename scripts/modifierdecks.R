@@ -1,4 +1,5 @@
 #This script creates and works with an attack modifier deck.
+#The functions in modifierfunctions.R are required for this script to run correctly.
 
 baseModifierDeck <- c(`+0`,`+0`,`+0`,`+0`,`+0`,`+0`,`+1`,`+1`,`+1`,`+1`,`+1`,`+2`,
                      `-1`,`-1`,`-1`,`-1`,`-1`,`-2`,`x0`,`x2`)

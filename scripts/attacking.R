@@ -1,8 +1,6 @@
 #This script will calculate attacks.
-
-baseAttack <- list(roll = T, shuffle = F, damage = 3, 
-                push = 0, pull = 0, pierce = 0, target = 1, poison = F, 
-                wound = F, immobilize = F, disarm = F, stun = F, muddle = F, curse = F)
+#This script requires the comparison function from attackcomparisons.R 
+#for the advantage and disadvantage calculations
 
 #Prints an attack in a more human readable format
 printAttack <- function(attack) {
@@ -30,3 +28,12 @@ standardAttackAction <- function(base, deck) {
   }
   attack
 }
+
+advantageAttackActionV1 <- function(base, deck) {
+  
+}
+
+disadvantageAttackActionV1 <- function(base, deck) {
+  
+}
+

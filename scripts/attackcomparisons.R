@@ -1,16 +1,5 @@
 #This script is meant to calculate and compare attacks
 
-target <- list(health = 7, shield = 1, retaliate = 0, poison = F, wound = F,
-               immobilize = F, disarm = F, stun = F, muddle = F)
-
-exampleAttack1 <- list(roll = F, shuffle = F, damage = 6, 
-                       push = 0, pull = 0, pierce = 2, target = 1, poison = F, 
-                       wound = F, immobilize = F, disarm = F, stun = T, muddle = F, curse = F)
-
-exampleAttack2 <- list(roll = F, shuffle = F, damage = 8, 
-                       push = 0, pull = 0, pierce = 0, target = 1, poison = F, 
-                       wound = F, immobilize = F, disarm = F, stun = F, muddle = F, curse = F)
-
 #calculates the state of the target after the attack
 #all negative conditions are set to 1 if the target dies
 targetAttacked <- function(attack, target) {
@@ -18,8 +7,8 @@ targetAttacked <- function(attack, target) {
     actualDamage <- attack$damage
   } else {
     actualDamage <- attack$damage + attack$pierce - target$shield
-    if (actualDamage < 0) {actualDamage <- 0}
   }
+  if (actualDamage < 0) {actualDamage <- 0}
   if (actualDamage > target$health) {actualDamage <- target$health}
   health <- target$health - actualDamage
   list(health = health, damage = actualDamage,
@@ -53,9 +42,10 @@ printAttackEffects <- function(enemyState) {
 #   2 if the second is better, 0 if equivalent, and -1 if ambiguous
 attackComparison <- function(attack1, attack2, target) {
   eState1 <- as.numeric(targetAttacked(attack1, target))
+  if (eState1[10] == 1) {eState1[c(8,9)] <- 1}
   eState2 <- as.numeric(targetAttacked(attack2, target))
+  if (eState2[10] == 1) {eState2[c(8,9)] <- 1}
   dif <- (eState1-eState2)[2:length(eState1)]
-  print(dif)
   if (sum(dif != 0) == 0) return(0)
   else if (sum(dif < 0) == 0) return(1)
   else if (sum(dif > 0) == 0) return(2)
