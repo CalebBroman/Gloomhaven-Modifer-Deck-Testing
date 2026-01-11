@@ -10,7 +10,7 @@ weights <- list(push = 0.5, pull = 0.5, target = 1, poison = 2, wound = 2, immob
                 disarm = 2, stun = 3, muddle = 1, curse = 1)
 
 #Base attack values: (without poisoned target considered)
-baseAttack <- list(roll = T, shuffle = F, damage = 3, 
+baseAttack <- list(roll = T, shuffle = F, damage = 4, 
                    push = 0, pull = 0, pierce = 0, target = 1, poison = F, 
                    wound = F, immobilize = F, disarm = F, stun = F, muddle = F, curse = F)
 

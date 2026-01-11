@@ -102,3 +102,62 @@ disadvantageAttackActionV1 <- function(base, deck, target) {
   }
 }
 
+#This is a house rule that I used when playing the game due to a misunderstanding of the rules
+#basically, for both advantage and disadvantage, you would do two individual standard draws, 
+#and choose the better/worse one to use for the attack.
+
+#for these functions, better/worse will be determined by a weighted version of damage, which
+#quantifies the value of effects and conditions to make choosing easier. 
+#If there's a tie, the first draw will be used.
+
+#Here's an example of a valid weight input:
+# weights <- list(push = 0.5, pull = 0.5, target = 1, poison = 2, wound = 2, immobilize = 1, 
+#                 disarm = 2, stun = 3, muddle = 1, curse = 1)
+
+advantageAttackActionHouseRule <- function(base, deck, target, weights) {
+  attack1 <- base
+  while(attack1$roll == T) {
+    card <- deck[[1]]
+    deck <- deck[2:length(deck)]
+    attack1 <- card(attack1)
+  }
+  attack2 <- base
+  while(attack2$roll == T) {
+    card <- deck[[1]]
+    deck <- deck[2:length(deck)]
+    attack2 <- card(attack2)
+  }
+  weightedDamage1 <- attack1$damage + ceiling(sum((as.numeric(attack1[3:12]) - 
+                                                   as.numeric(c(0, 0, 0, target[4:9], 0))) * 
+                                                  as.numeric(weights))) - weights$target
+  weightedDamage2 <- attack2$damage + ceiling(sum((as.numeric(attack2[3:12]) - 
+                                                   as.numeric(c(0, 0, 0, target[4:9], 0))) * 
+                                                  as.numeric(weights))) - weights$target
+  dif <- weightedDamage1 - weightedDamage2
+  if (dif < 0) return(targetAttacked(attack2, target))
+  else return(targetAttacked(attack1, target))
+}
+
+disadvantageAttackActionHouseRule <- function(base, deck, target, weights) {
+  attack1 <- base
+  while(attack1$roll == T) {
+    card <- deck[[1]]
+    deck <- deck[2:length(deck)]
+    attack1 <- card(attack1)
+  }
+  attack2 <- base
+  while(attack2$roll == T) {
+    card <- deck[[1]]
+    deck <- deck[2:length(deck)]
+    attack2 <- card(attack2)
+  }
+  weightedDamage1 <- attack1$damage + ceiling(sum((as.numeric(attack1[3:12]) - 
+                                                     as.numeric(c(0, 0, 0, target[4:9], 0))) * 
+                                                    as.numeric(weights))) - weights$target
+  weightedDamage2 <- attack2$damage + ceiling(sum((as.numeric(attack2[3:12]) - 
+                                                     as.numeric(c(0, 0, 0, target[4:9], 0))) * 
+                                                    as.numeric(weights))) - weights$target
+  dif <- weightedDamage1 - weightedDamage2
+  if (dif > 0) return(targetAttacked(attack2, target))
+  else return(targetAttacked(attack1, target))
+}
