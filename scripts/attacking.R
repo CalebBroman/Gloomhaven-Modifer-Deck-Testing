@@ -76,13 +76,14 @@ disadvantageAttackActionV1 <- function(base, deck, target) {
   card2roll <- card1(list(roll = T))$roll
   if (card1roll && card2roll) {
     #if both cards roll, continue drawing till you find one that doesn't
-    while(roll == T) {
+    cardroll <- T
+    while(cardroll == T) {
       card <- deck[[1]]
       cardroll <- card(list(roll = T))$roll
       deck <- deck[2:length(deck)]
     }
     #apply just the card that doesn't roll
-    return(targetAttacked(card(attack), target))
+    return(targetAttacked(card(base), target))
   } else if (card1roll && !card2roll) {
     #if card 1 rolls but card 2 doesn't, apply just card 2
     return(targetAttacked(card2(base), target))

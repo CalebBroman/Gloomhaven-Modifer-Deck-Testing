@@ -23,7 +23,10 @@
 "disarmr" <- function(x) {x$roll <- T; x$disarm <- T; x}
 "muddler" <- function(x) {x$roll <- T; x$muddle <- T; x}
 "addtargetr" <- function(x) {x$roll <- T; x$target <- x$target + 1; x}
-"+1shield" <- function(x) {x$roll <- F; x$damage <- x$damage + 1; x$shield <- x$shield + 1; x}
+"+1shield" <- function(x) {x$roll <- F; x$damage <- x$damage + 1;
+                          #I don't want to deal with positive effects yet
+                          #x$shield <- x$shield + 1; 
+                          x}
 
 
 
