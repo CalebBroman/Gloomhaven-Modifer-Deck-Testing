@@ -27,6 +27,8 @@ attackstibble <- tibble(iteration = numeric(),
                         immobilize = logical(), disarm = logical(), stun = logical(), 
                         muddle = logical(), curse = logical())
 
+#account for poison
+if (baseTarget$poison) {baseAttack$damage <- baseAttack$damage + 1}
 
 for (i in 1:n) {
   #shuffle the base deck
@@ -35,39 +37,43 @@ for (i in 1:n) {
   #run a standard attack with the shuffled deck
   attack <- standardAttackAction(baseAttack, shuffledDeck, baseTarget)
   #calculate weighted damage
-  weightedDamage <- attack$damage + ceiling(sum(as.numeric(attack[3:12]) * as.numeric(weights))) - weights$target
+  weightedDamage <- attack$damage + ceiling(sum((as.numeric(attack[3:12]) - 
+                                                   c(0, 0, 0, baseTarget[4:9])) * 
+                                                  as.numeric(weights))) - weights$target
   #add the attack info to the table
-  attackstibble <- add_row(attackstibble, iteration = i, attackType = "standard", health = attack$health, 
-          damage = attack$damage, weightedDamage = weightedDamage, push = attack$push, pull = attack$pull, 
-          target = attack$target, poison = attack$poison, 
-          wound = attack$wound, immobilize = attack$immobilize,
-          disarm = attack$disarm, stun = attack$disarm,
-          muddle = attack$muddle, curse = attack$curse)
+  attackstibble <- add_row(attackstibble, iteration = i, attackType = "standard", 
+                           health = attack$health, damage = attack$damage, 
+                           weightedDamage = weightedDamage, push = attack$push, pull = attack$pull, 
+                           target = attack$target, poison = attack$poison, wound = attack$wound, 
+                           immobilize = attack$immobilize, disarm = attack$disarm, 
+                           stun = attack$disarm, muddle = attack$muddle, curse = attack$curse)
   
   #run an advantaged attack with the same shuffled deck
   attack <- advantageAttackActionV1(baseAttack, shuffledDeck, baseTarget)
   #calculate weighted damage
-  weightedDamage <- attack$damage + ceiling(sum(as.numeric(attack[3:12]) * as.numeric(weights))) - weights$target
+  weightedDamage <- attack$damage + ceiling(sum((as.numeric(attack[3:12]) - 
+                                                   c(0, 0, 0, baseTarget[4:9])) * 
+                                                  as.numeric(weights))) - weights$target
   #add the attack info to the table
-  attackstibble <- add_row(attackstibble, iteration = i, attackType = "advantage", health = attack$health, 
-          damage = attack$damage, weightedDamage = weightedDamage, push = attack$push, 
-          pull = attack$pull, 
-          target = attack$target, poison = attack$poison, 
-          wound = attack$wound, immobilize = attack$immobilize,
-          disarm = attack$disarm, stun = attack$disarm,
-          muddle = attack$muddle, curse = attack$curse)
+  attackstibble <- add_row(attackstibble, iteration = i, attackType = "advantage", 
+                           health = attack$health, damage = attack$damage, 
+                           weightedDamage = weightedDamage, push = attack$push, pull = attack$pull, 
+                           target = attack$target, poison = attack$poison, wound = attack$wound, 
+                           immobilize = attack$immobilize, disarm = attack$disarm, 
+                           stun = attack$disarm, muddle = attack$muddle, curse = attack$curse)
   
   #run a desadvantaged attack with the same shuffled deck
   attack <- disadvantageAttackActionV1(baseAttack, shuffledDeck, baseTarget)
   #calculate weighted damage
-  weightedDamage <- attack$damage + ceiling(sum(as.numeric(attack[3:12]) * as.numeric(weights))) - weights$target
+  weightedDamage <- attack$damage + ceiling(sum((as.numeric(attack[3:12]) - 
+                                                   c(0, 0, 0, baseTarget[4:9])) * 
+                                                  as.numeric(weights))) - weights$target
   #add the attack info to the table
-  attackstibble <- add_row(attackstibble, iteration = i, attackType = "disadvantage", health = attack$health, 
-          damage = attack$damage, weightedDamage = weightedDamage, push = attack$push, 
-          pull = attack$pull, 
-          target = attack$target, poison = attack$poison, 
-          wound = attack$wound, immobilize = attack$immobilize,
-          disarm = attack$disarm, stun = attack$disarm,
-          muddle = attack$muddle, curse = attack$curse)
+  attackstibble <- add_row(attackstibble, iteration = i, attackType = "disadvantage",
+                           health = attack$health, damage = attack$damage, 
+                           weightedDamage = weightedDamage, push = attack$push, pull = attack$pull, 
+                           target = attack$target, poison = attack$poison, wound = attack$wound, 
+                           immobilize = attack$immobilize, disarm = attack$disarm, 
+                           stun = attack$disarm, muddle = attack$muddle, curse = attack$curse)
 }
 
