@@ -4,7 +4,7 @@
 # 
 # (roll = T, shuffle = F, damage, 
 #  push = 0, pull = 0, pierce = 0, target = 1, poison = F, wound = F,
-#  immobilize = F, disarm = F, stun = F, muddle = F, curse = F)
+#  immobilize = F, disarm = F, stun = F, muddle = F, curse = F, shieldSelf = 0)
 
 #Universal Modifiers:
 "+0" <- function(x) {x$roll <- F; x}
@@ -23,10 +23,8 @@
 "disarmr" <- function(x) {x$roll <- T; x$disarm <- T; x}
 "muddler" <- function(x) {x$roll <- T; x$muddle <- T; x}
 "addtargetr" <- function(x) {x$roll <- T; x$target <- x$target + 1; x}
-"+1shield" <- function(x) {x$roll <- F; x$damage <- x$damage + 1;
-                          #I don't want to deal with positive effects yet
-                          #x$shield <- x$shield + 1; 
-                          x}
+"+1shieldself" <- function(x) {x$roll <- F; x$damage <- x$damage + 1; 
+                                x$shieldSelf <- x$shieldSelf + 1; x}
 
 
 

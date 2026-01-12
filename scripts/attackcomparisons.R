@@ -18,7 +18,8 @@ targetAttacked <- function(attack, target) {
        immobilize = target$immobilize || attack$immobilize || !health, 
        disarm = target$disarm || attack$disarm || !health, 
        stun = target$stun || attack$stun || !health, 
-       muddle = target$muddle || attack$muddle || !health, curse = attack$curse || !health)
+       muddle = target$muddle || attack$muddle || !health, curse = attack$curse || !health, 
+       shieldSelf = attack$shieldSelf)
 }
 
 #Prints the state of the enemy after an attack in a more human readable format, 
@@ -37,6 +38,7 @@ printAttackEffects <- function(enemyState) {
     if (enemyState$muddle == T) {print("muddle")}
     if (enemyState$curse == T) {print("curse")}
   }
+  if (enemyState$shieldSelf != 0) {print(str_c("shield self: ", enemyState$shieldSelf))}
 }
 
 #compares two attacks, returns 1 if the first is better, 

@@ -7,15 +7,16 @@ n <- 10000
 deck <- bruteModifierDeck
 #effect weights for weighted damage
 weights <- list(push = 0.5, pull = 0.5, target = 1, poison = 2, wound = 2, immobilize = 1, 
-                disarm = 2, stun = 3, muddle = 1, curse = 1)
+                disarm = 2, stun = 3, muddle = 1, curse = 1, shieldSelf = 0.5)
 
 #Base attack values: (without poisoned target considered)
 baseAttack <- list(roll = T, shuffle = F, damage = 4, 
                    push = 0, pull = 0, pierce = 0, target = 1, poison = F, 
-                   wound = F, immobilize = F, disarm = F, stun = F, muddle = F, curse = F)
+                   wound = F, immobilize = F, disarm = F, stun = F, muddle = F, curse = F, 
+                   shieldSelf = 0)
 
 #Target values:
-baseTarget <- list(health = 7, shield = 0, retaliate = 0, poison = F, wound = F,
+baseTarget <- list(health = 7, shield = 2, retaliate = 0, poison = F, wound = F,
                    immobilize = F, disarm = F, stun = F, muddle = F)
 
 #Data table for the generated data
@@ -38,9 +39,7 @@ for (i in 1:n) {
   #run a standard attack with the shuffled deck
   attack <- standardAttackAction(baseAttack, shuffledDeck, baseTarget)
   #calculate weighted damage
-  weightedDamage <- attack$damage + ceiling(sum((as.numeric(attack[3:12]) - 
-                                                   as.numeric(c(0, 0, 0, baseTarget[4:9], 0))) * 
-                                                  as.numeric(weights))) - weights$target
+  weightedDamage <- attackWeighting(attack, weights)
   #add the attack info to the table
   attackstibble <- add_row(attackstibble, iteration = i, attackType = "standard", 
                            health = attack$health, damage = attack$damage, 
@@ -52,9 +51,7 @@ for (i in 1:n) {
   #run an advantaged attack with the same shuffled deck
   attack <- advantageAttackActionV1(baseAttack, shuffledDeck, baseTarget)
   #calculate weighted damage
-  weightedDamage <- attack$damage + ceiling(sum((as.numeric(attack[3:12]) - 
-                                                   as.numeric(c(0, 0, 0, baseTarget[4:9], 0))) * 
-                                                  as.numeric(weights))) - weights$target
+  weightedDamage <- attackWeighting(attack, weights)
   #add the attack info to the table
   attackstibble <- add_row(attackstibble, iteration = i, attackType = "advantage", 
                            health = attack$health, damage = attack$damage, 
@@ -66,9 +63,7 @@ for (i in 1:n) {
   #run a disadvantaged attack with the same shuffled deck
   attack <- disadvantageAttackActionV1(baseAttack, shuffledDeck, baseTarget)
   #calculate weighted damage
-  weightedDamage <- attack$damage + ceiling(sum((as.numeric(attack[3:12]) - 
-                                                   as.numeric(c(0, 0, 0, baseTarget[4:9], 0))) * 
-                                                  as.numeric(weights))) - weights$target
+  weightedDamage <- attackWeighting(attack, weights)
   #add the attack info to the table
   attackstibble <- add_row(attackstibble, iteration = i, attackType = "disadvantage",
                            health = attack$health, damage = attack$damage, 
@@ -80,9 +75,7 @@ for (i in 1:n) {
   #run an advantaged attack with the same shuffled deck, with the house rule
   attack <- advantageAttackActionHouseRule(baseAttack, shuffledDeck, baseTarget, weights)
   #calculate weighted damage
-  weightedDamage <- attack$damage + ceiling(sum((as.numeric(attack[3:12]) - 
-                                                   as.numeric(c(0, 0, 0, baseTarget[4:9], 0))) * 
-                                                  as.numeric(weights))) - weights$target
+  weightedDamage <- attackWeighting(attack, weights)
   #add the attack info to the table
   attackstibble <- add_row(attackstibble, iteration = i, attackType = "houseAdvantage", 
                            health = attack$health, damage = attack$damage, 
@@ -94,9 +87,7 @@ for (i in 1:n) {
   #run a disadvantaged attack with the same shuffled deck, with the house rule
   attack <- disadvantageAttackActionHouseRule(baseAttack, shuffledDeck, baseTarget, weights)
   #calculate weighted damage
-  weightedDamage <- attack$damage + ceiling(sum((as.numeric(attack[3:12]) - 
-                                                   as.numeric(c(0, 0, 0, baseTarget[4:9], 0))) * 
-                                                  as.numeric(weights))) - weights$target
+  weightedDamage <- attackWeighting(attack, weights)
   #add the attack info to the table
   attackstibble <- add_row(attackstibble, iteration = i, attackType = "houseDisadvantage",
                            health = attack$health, damage = attack$damage, 

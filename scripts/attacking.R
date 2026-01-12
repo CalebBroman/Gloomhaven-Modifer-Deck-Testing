@@ -17,6 +17,18 @@ printAttack <- function(attack) {
   if (attack$muddle == T) {print("muddle")}
   if (attack$curse == T) {print("curse")}
   if (attack$shuffle == T) {print("shuffle after turn")}
+  if (attack$shieldSelf != 0) {print(str_c("shield self: ", attack$shieldSelf))}
+}
+
+#Here's an example of a valid weight input:
+# weights <- list(push = 0.5, pull = 0.5, target = 1, poison = 2, wound = 2, immobilize = 1, 
+#                 disarm = 2, stun = 3, muddle = 1, curse = 1, shieldSelf = 0.5)
+
+#calculate a weighted value of an attack:
+attackWeighting <- function(attack, weights) {
+  attack$damage + ceiling(sum((as.numeric(attack[3:13]) - 
+                                as.numeric(c(0, 0, 0, baseTarget[4:9], 0, 0))) * 
+                                as.numeric(weights))) - weights$target
 }
 
 #attacks require the base attack values, the modifier deck to be drawn from, 
@@ -110,10 +122,6 @@ disadvantageAttackActionV1 <- function(base, deck, target) {
 #quantifies the value of effects and conditions to make choosing easier. 
 #If there's a tie, the first draw will be used.
 
-#Here's an example of a valid weight input:
-# weights <- list(push = 0.5, pull = 0.5, target = 1, poison = 2, wound = 2, immobilize = 1, 
-#                 disarm = 2, stun = 3, muddle = 1, curse = 1)
-
 advantageAttackActionHouseRule <- function(base, deck, target, weights) {
   attack1 <- base
   while(attack1$roll == T) {
@@ -127,12 +135,8 @@ advantageAttackActionHouseRule <- function(base, deck, target, weights) {
     deck <- deck[2:length(deck)]
     attack2 <- card(attack2)
   }
-  weightedDamage1 <- attack1$damage + ceiling(sum((as.numeric(attack1[3:12]) - 
-                                                   as.numeric(c(0, 0, 0, target[4:9], 0))) * 
-                                                  as.numeric(weights))) - weights$target
-  weightedDamage2 <- attack2$damage + ceiling(sum((as.numeric(attack2[3:12]) - 
-                                                   as.numeric(c(0, 0, 0, target[4:9], 0))) * 
-                                                  as.numeric(weights))) - weights$target
+  weightedDamage1 <- weightedDamage <- attackWeighting(attack1, weights)
+  weightedDamage2 <- weightedDamage <- attackWeighting(attack2, weights)
   dif <- weightedDamage1 - weightedDamage2
   if (dif < 0) return(targetAttacked(attack2, target))
   else return(targetAttacked(attack1, target))
@@ -151,12 +155,8 @@ disadvantageAttackActionHouseRule <- function(base, deck, target, weights) {
     deck <- deck[2:length(deck)]
     attack2 <- card(attack2)
   }
-  weightedDamage1 <- attack1$damage + ceiling(sum((as.numeric(attack1[3:12]) - 
-                                                     as.numeric(c(0, 0, 0, target[4:9], 0))) * 
-                                                    as.numeric(weights))) - weights$target
-  weightedDamage2 <- attack2$damage + ceiling(sum((as.numeric(attack2[3:12]) - 
-                                                     as.numeric(c(0, 0, 0, target[4:9], 0))) * 
-                                                    as.numeric(weights))) - weights$target
+  weightedDamage1 <- weightedDamage <- attackWeighting(attack1, weights)
+  weightedDamage2 <- weightedDamage <- attackWeighting(attack2, weights)
   dif <- weightedDamage1 - weightedDamage2
   if (dif > 0) return(targetAttacked(attack2, target))
   else return(targetAttacked(attack1, target))

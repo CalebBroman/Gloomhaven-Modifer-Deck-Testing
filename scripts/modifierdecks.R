@@ -8,7 +8,8 @@ baseModifierDeck <- c(`+0`,`+0`,`+0`,`+0`,`+0`,`+0`,`+1`,`+1`,`+1`,`+1`,`+1`,`+2
 bruteModifierDeck <- c(`+0`,`+0`,`+0`,`+0`,`+0`,`+0`,`+1`,`+1`,`+1`,`+1`,`+1`,`+1`,`+1`,`+1`,`+1`,
                `+1`,`+1`,`+2`,`+3`,`push1r`,`push1r`,`push1r`,`push1r`,`push1r`,`push1r`,
                `pierce3r`,`pierce3r`,`stunr`,`stunr`,`disarmr`,`muddler`,
-               `addtargetr`,`addtargetr`,`+1shield`,`-1`,`-1`,`-2`,`x0`,`x2`)
+               `addtargetr`,`addtargetr`,`+1shieldself`,`-1`,`-1`,`-2`,`x0`,`x2`)
+
 
 
 shuffle <- function(deck) {
